@@ -1,0 +1,17 @@
+[
+    {
+        "login": "softcat",
+        "role": 0,
+        "token": "058ecf874d98232674304d95fb6f0f01"
+    },
+    {
+        "login": "senat",
+        "role": 1,
+        "token": "99e4900dd603889cffb374669fef8637"
+    },
+    {
+        "login": "petrov",
+        "role": 1,
+        "token": "fb595d7c602ccc22442d0513ee0deafe"
+    }
+]

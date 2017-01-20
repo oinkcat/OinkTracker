@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title><%= tr :title %></title>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+    <meta name="viewport" content="device-width" />
+    <link rel="stylesheet" href="style.css" />
+    <script type="text/javascript" src="angular.min.js"></script>
+    <script type="text/javascript" src="trackerapp.js"></script>
+</head>
+
+<body ng-app="tracker">
+    <header>
+        <div class="menu" ng-click="toggleSideMenu()" title="<%= tr :menu %>">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        
+        <div class="titles">
+            <span class="title">
+                {{ title }}
+            </span>
+            <span class="subtitle" ng-show="subTitle != null">
+                {{ subTitle }}
+            </span>
+        </div>
+        
+        <div class="userpic">
+            <img title="<%= login %>" src="/tiles/<%= login %>.jpg" />
+        </div>
+    </header>
+    
+    <aside ng-show="menuShown" ng-class="menuAnimClass" ng-controller="menu">
+        <p><%= tr :project %></p>
+        <select ng-model="project" ng-options="proj.name for proj in projects">
+        </select>
+        <hr />
+        
+        <p><%= tr :category %></p>
+        <ul>
+            <li ng-repeat="cat in project.categories" ng-class="isActive(cat, 'c')">
+                <a ng-click="changeCategoryView(cat)">{{ cat.name }}</a>
+            </li>
+        </ul>
+        <hr />
+        
+        <p><%= tr :status %></p>
+        <ul>
+            <li ng-repeat="stat in category.countsByStatus" ng-class="isActive(stat, 's')">
+                <a ng-click="changeStatusView(stat)">{{ stat.name }}</a>
+            </li>
+        </ul>
+    </aside>
+    
+    <section class="page main" ng-show="mode == 'list'" ng-controller="list">
+        <div class="buttons">
+            <a class="btn primary right" ng-class="disableOnLoad()" ng-click="newItem()">
+                + <%= tr :new_ticket %>
+            </a>
+            <div class="clear"></div>
+        </div>
+        
+        <table ng-show="!loadingBannerShown && hasItems()">
+            <tr ng-repeat="item in items | orderBy:['done','-priority']" ng-class="selectedClass(item)">
+                <td class="priority-sign">
+                    <div ng-class="progressView.priority(item)">
+                        <span ng-class="progressView.type(item)"></span>
+                    </div>
+                </td>
+                <td>
+                    <div class="info">
+                        <a ng-click="openItem(item)">{{ item.title }}</a>
+                        <span class="show-more" ng-click="selectItem(item)">...</span>
+                    </div>
+                    <div class="tags">
+                        <span ng-repeat="tag in item.tags" class="tag" ng-class="tagClass(tag)">{{ tagText(tag) }}</span>
+                    </div>
+                    <div class="text" ng-show="selectedItem == item">
+                        {{ itemDescription(item.text) }}
+                    </div>
+                </td>
+                <td class="actions-progress">
+                    <div class="progress" ng-click="selectItem(item)">
+                        {{ item.progress + '%' }}
+                        <div class="bar" ng-style="progressView.style(item)"></div>
+                    </div>
+                    <div class="actions" ng-show="isActiveTicketsView()">
+                        <% if is_dev then %>
+                            <a class="btn" ng-click="changeProgress(item, 1)">+</a>
+                            <a class="btn" ng-click="changeProgress(item, -1)">-</a>
+                        <% else %>
+                            <a class="btn" ng-show="item.done" ng-click="confirmDone(item)">
+                                &check;
+                            </a>
+                        <% end %>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="clear"></div>
+                </td>
+            </tr>
+        </table>
+        
+        <div class="banner" ng-hide="loading || hasItems()">
+            <div>
+                <img alt="empty" src="empty.png" />
+            </div>
+            <%= tr :no_tickets %>
+        </div>
+        
+        <div class="banner" ng-show="loadingBannerShown">
+            <div>
+                <img alt="loading" src="loader-big.gif" />
+            </div>
+            <%= tr :loading %>
+        </div>
+    </section>
+    
+    <section class="page item" ng-show="mode == 'item'" ng-controller="item">
+        <div class="item-form">
+            <h1 ng-show="editing">{{ editingItem.title }}</h1>
+            <h1 ng-hide="editing"><%= tr :new_ticket_title %></h1>
+            
+            <div class="form-group">
+                <h3><%= tr :description %></h3>
+                <textarea ng-model="editingItem.text"></textarea>
+            </div>
+            
+            <div class="form-group left">
+                <h3><%= tr :priority %></h3>
+                <ul>
+                    <li ng-class="activeIfPriority(2)" ng-click="setPriority(2)">
+                        <span>&uarr;</span> <%= tr :high %>
+                    </li>
+                    <li ng-class="activeIfPriority(1)" ng-click="setPriority(1)">
+                        <span>&bull;</span> <%= tr :normal %>
+                    </li>
+                    <li ng-class="activeIfPriority(0)" ng-click="setPriority(0)">
+                        <span>&darr;</span> <%= tr :low %>
+                    </li>
+                </ul>
+            </div>
+            
+            <% if is_dev then %>
+                <div class="form-group right">
+                    <h3><%= tr :tags %></h3>
+                    <input type="text" class="tag-list" />
+                </div>
+            <% end %>
+            
+            <div class="clear"></div>
+            
+            <div class="form-buttons">
+                <a class="btn primary" ng-click="saveItem()"><%= tr :save %></a>
+                <a class="btn" ng-click="closeItem()"><%= tr :cancel %></a>
+                <a class="btn danger right" ng-show="editing" ng-click="removeItem()">
+                    <%= tr :remove %>
+                </a>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>

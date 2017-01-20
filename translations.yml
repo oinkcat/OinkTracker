@@ -1,0 +1,52 @@
+en:
+    project: Project
+    category: Category
+    status: Status
+    active: Active
+    done: Done
+    title: Tickets tracker
+    menu: Navigation menu
+    new_ticket: Add new ticket
+    loading: Loading tickets...
+    no_tickets: There are no tickets
+    new_ticket_title: New ticket
+    description: Description
+    priority: Priority
+    tags: Tags
+    high: High
+    normal: Normal
+    low: Low
+    save: Save
+    cancel: Cancel
+    remove: Remove
+    # Error message page
+    auth_issue: Authentication problem
+    invalid_login: Invalid login token!
+    auth_required: Authentication required!
+    use_token_url: Use token url to authenticate
+ru:
+    project: Проект
+    category: Категория
+    status: Статус
+    active: Активные
+    done: Выполненные
+    title: Трекер задач
+    menu: Меню навигации
+    new_ticket: Добавить элемент
+    loading: Зарузка списка элементов...
+    no_tickets: Нет элементов для отображения
+    new_ticket_title: Добавление элемента
+    description: Описание
+    priority: Приоритет
+    tags: Тэги
+    high: Высокий
+    normal: Обычный
+    low: Низкий
+    save: Сохранить
+    cancel: Отмена
+    remove: Удалить
+    # Страница сообщения об ошибке
+    auth_issue: Проблема аутентификации
+    invalid_login: Неверный токен входа!
+    auth_required: Необходимо войти в систему!
+    use_token_url: Используйте ссылку с токеном для входа

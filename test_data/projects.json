@@ -1,0 +1,29 @@
+[
+    {
+        "id": 1,
+        "name": "АИС Сопровождение",
+        "ts": null,
+        "categories": [
+            { "id": 1, "type": 0, "name": "Задачи" },
+            { "id": 2, "type": 1, "name": "Баги" }
+        ]
+    },
+    {
+        "id": 2,
+        "name": "АИС Диагностика",
+        "ts": null,
+        "categories": [
+            { "id": 3, "type": 0, "name": "Задачи" },
+            { "id": 4, "type": 1, "name": "Баги" }
+        ]
+    },
+    {
+        "id": 3,
+        "name": "Прочее",
+        "ts": null,
+        "categories": [
+            { "id": 5, "type": 0, "name": "Задачи" },
+            { "id": 6, "type": 1, "name": "Баги" }
+        ]
+    }
+]

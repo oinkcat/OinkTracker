@@ -1,0 +1,134 @@
+[
+  {
+    "id": 1,
+    "text": "В аккаунте секретаря добавить фильтр по дате регистрации клиента",
+    "status": 0,
+    "category_id": 1,
+    "title": "В аккаунте секретаря добавить фильтр по дате регистраци...",
+    "priority": 0,
+    "progress": 80,
+    "ts": "12.01.2017",
+    "completed_ts": null,
+    "expire_ts": "19.01.2017",
+    "tags": [
+      "отложено"
+    ]
+  },
+  {
+    "id": 2,
+    "text": "Объединение несколько временных интервалов в расписании в одно событие при создании события. Специалист выбирает диапазон мышкой и создает одно событие продолжительностью несколько интервалов.",
+    "status": 0,
+    "category_id": 1,
+    "title": "Объединение несколько временных интервалов в расписании...",
+    "priority": 0,
+    "progress": 20,
+    "ts": "12.01.2017",
+    "completed_ts": null,
+    "expire_ts": null,
+    "tags": [
+      "отложено"
+    ]
+  },
+  {
+    "id": 3,
+    "text": "Мессенджер",
+    "status": 0,
+    "category_id": 1,
+    "title": "Мессенджер",
+    "priority": 1,
+    "progress": 40,
+    "ts": "12.01.2017",
+    "completed_ts": null,
+    "expire_ts": null,
+    "tags": [
+
+    ]
+  },
+  {
+    "id": 4,
+    "text": "Экспорт карты клиента",
+    "status": 0,
+    "category_id": 3,
+    "title": "Экспорт карты клиента",
+    "priority": 0,
+    "progress": 0,
+    "ts": "12.01.2017",
+    "completed_ts": null,
+    "expire_ts": null,
+    "tags": [
+
+    ]
+  },
+  {
+    "id": 5,
+    "text": "Трекер: тэги\n\nРазные отметки о статусе задач.",
+    "status": 0,
+    "category_id": 5,
+    "title": "Трекер: тэги",
+    "priority": 0,
+    "progress": 80,
+    "ts": "12.01.2017",
+    "completed_ts": null,
+    "expire_ts": null,
+    "tags": [
+
+    ]
+  },
+  {
+    "id": 6,
+    "text": "Трекер: комментарии\n\nКомментарии на страничке информации о задаче.",
+    "status": 0,
+    "category_id": 5,
+    "title": "Трекер: комментарии",
+    "priority": 1,
+    "progress": 0,
+    "ts": "12.01.2017",
+    "completed_ts": null,
+    "expire_ts": null
+  },
+  {
+    "id": 7,
+    "text": "Трекер: файлы вложений\n\nВозможность прикреплять файлы к задачам.",
+    "status": 0,
+    "category_id": 5,
+    "title": "Трекер: файлы вложений",
+    "priority": 1,
+    "progress": 0,
+    "ts": "12.01.2017",
+    "completed_ts": null,
+    "expire_ts": null,
+    "tags": [
+
+    ]
+  },
+  {
+    "id": 8,
+    "text": "Трекер: база данных\n\nСейчас все на файлах.",
+    "status": 0,
+    "category_id": 5,
+    "title": "Трекер: база данных",
+    "priority": 1,
+    "progress": 0,
+    "ts": "12.01.2017",
+    "completed_ts": null,
+    "expire_ts": null,
+    "tags": [
+
+    ]
+  },
+  {
+    "id": 9,
+    "text": "Трекер: оптимизация разметки",
+    "status": 2,
+    "category_id": 5,
+    "title": "Трекер: оптимизация разметки",
+    "priority": 2,
+    "progress": 100,
+    "ts": "16.01.2017",
+    "completed_ts": "17.01.2017",
+    "expire_ts": "19.01.2017",
+    "tags": [
+
+    ]
+  }
+]

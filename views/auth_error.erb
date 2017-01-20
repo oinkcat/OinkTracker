@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+    
+<head>
+    <link rel="stylesheet" href="err_style.css" />
+    <title><%= tr :auth_issue %></title>
+</head>    
+<body>
+    <section>
+        <figure>&times;</figure>
+        <% if login_error then %>
+            <h1><%= tr :invalid_login %></h1>
+        <% else %>
+            <h1><%= tr :auth_required %></h1>
+            <h2><%= tr :use_token_url %></h2>
+        <% end %>
+    </section>
+</body>
+    
+</html>
