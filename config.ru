@@ -3,4 +3,4 @@ require 'bundler'
 Bundler.require
 
 require './tracker.rb'
-TrackerApp.run!
+run TrackerApp.new
