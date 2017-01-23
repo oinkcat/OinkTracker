@@ -30,6 +30,21 @@
     ]
   },
   {
+    "id": 3,
+    "text": "Мессенджер",
+    "status": 0,
+    "category_id": 1,
+    "title": "Мессенджер",
+    "priority": 1,
+    "progress": 40,
+    "ts": "12.01.2017",
+    "completed_ts": null,
+    "expire_ts": null,
+    "tags": [
+
+    ]
+  },
+  {
     "id": 4,
     "text": "Экспорт карты клиента",
     "status": 0,
@@ -47,14 +62,14 @@
   {
     "id": 5,
     "text": "Трекер: тэги\n\nРазные отметки о статусе задач.",
-    "status": 0,
+    "status": 1,
     "category_id": 5,
     "title": "Трекер: тэги",
     "priority": 0,
-    "progress": 80,
+    "progress": 100,
     "ts": "12.01.2017",
     "completed_ts": null,
-    "expire_ts": null,
+    "expire_ts": "21.01.2017",
     "tags": [
 
     ]
@@ -112,21 +127,6 @@
     "ts": "16.01.2017",
     "completed_ts": "17.01.2017",
     "expire_ts": "19.01.2017",
-    "tags": [
-
-    ]
-  },
-  {
-    "id": 10,
-    "text": "Мессенджер",
-    "status": 0,
-    "category_id": 1,
-    "title": "Мессенджер",
-    "priority": 1,
-    "progress": 40,
-    "ts": "23.01.2017",
-    "completed_ts": null,
-    "expire_ts": null,
     "tags": [
 
     ]

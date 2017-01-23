@@ -130,6 +130,7 @@ class TrackerApp < Sinatra::Base
         new_ticket.status = data['status']
         new_ticket.progress = data['progress']
         new_ticket.cat_id = data['category_id'].to_i
+        new_ticket.tags = data['tags']
         Repository.add_ticket new_ticket
         
         json_response :ok => true
