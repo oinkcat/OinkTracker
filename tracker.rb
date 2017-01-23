@@ -142,6 +142,7 @@ class TrackerApp < Sinatra::Base
         ticket.text = data['text']
         ticket.priority = data['priority']
         ticket.status = data['status']
+        ticket.tags = data['tags']
         Repository.update_ticket ticket
         
         json_response :ok => true
@@ -168,7 +169,7 @@ class TrackerApp < Sinatra::Base
     Translation.init_for_language LANGUAGE
 end
 
-# Entry point
+# If we doesn't hosts on OpenShift - run directly
 if ENV['OPENSHIFT_APP_NAME'] == nil then
     TrackerApp.run!
 end

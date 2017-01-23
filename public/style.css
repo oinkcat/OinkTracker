@@ -253,7 +253,7 @@ section.item .right {
     float: right;
 }
 
-section.item .tag-list {
+section.item .tags input {
     width: 97%;
 }
 
@@ -338,6 +338,7 @@ table td .basic {
 }
 
 .main td .tag {
+    margin-right: 3px;
     display: inline-block;
     font-size: 9pt;
     color: white;
@@ -347,15 +348,15 @@ table td .basic {
 }
 
 .main td .tag.r {
-    background-color: #FFA3A3;
+    background-color: #FF7A7A;
 }
 
 .main td .tag.g {
-    background-color: #88FF83;
+    background-color: #5AE754;
 }
 
 .main td .tag.b {
-    background-color: #83FFE2;
+    background-color: #76D1F6;
 }
 
 .main td .text {

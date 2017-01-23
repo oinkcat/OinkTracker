@@ -44,7 +44,7 @@
         this.progress = 0;
         this.done = false;
         this.catId = 0;
-        this.tags = null;
+        this.tags = [];
         
         this._step = 20;
     }
@@ -57,7 +57,10 @@
         newTicket.progress = json.progress;
         newTicket.done = newTicket.progress == 100;
         newTicket.status = json.status;
-        newTicket.tags = json.tags;
+        
+        if(json.tags != null) {
+            newTicket.tags = json.tags;
+        }
         
         return newTicket;
     };
@@ -446,6 +449,20 @@
         $scope.editing = false;
         $scope.editingItem = null;
         
+        $scope.itemTagsInline = function(newTags) {
+            if($scope.editingItem == null)
+                return '';
+            
+            if(arguments.length == 0) {
+                return $scope.editingItem.tags.join(', ');
+            } else {
+                var splittedTags = newTags.split(/\s*,\s*/);
+                $scope.editingItem.tags = splittedTags.filter(function(tag) {
+                    return tag.trim().length > 0;
+                });
+            }
+        };
+
         // Save ticket
         $scope.saveItem = function() {
             if($scope.editingItem.text.trim().length > 0) {
@@ -479,7 +496,7 @@
             }
         };
         
-        // Newticket creating
+        // New ticket creating
         root.onnewitem = function() {
             var newItem = new Ticket(0, '');
             newItem.priority = 1;

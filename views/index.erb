@@ -143,9 +143,9 @@
             </div>
             
             <% if is_dev then %>
-                <div class="form-group right">
+                <div class="form-group right tags">
                     <h3><%= tr :tags %></h3>
-                    <input type="text" class="tag-list" />
+                    <input type="text" ng-model="itemTagsInline" ng-model-options="{ getterSetter: true }" />
                 </div>
             <% end %>
             
