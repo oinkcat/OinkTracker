@@ -27,9 +27,18 @@ module TrackerModel
         
         # Get tickets in given category with certain status
         def self.get_tickets(category_id, status)
+            # Array of statuses to query
+            statuses_match = Array.new()
+            if status == Ticket::Confirmed then
+                statuses_match << Ticket::Confirmed
+            else
+                statuses_match << Ticket::Active
+                statuses_match << Ticket::Done
+            end
+            
             tickets_bson = get_context()[:tickets].find('$and' => [
                 { category_id: category_id },
-                { status: status }
+                { status: { '$in': statuses_match } }
             ])
             tickets_bson.map { |doc| Ticket.from_json doc }
         end

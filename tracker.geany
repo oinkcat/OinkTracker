@@ -19,7 +19,7 @@ indent_mode=2
 
 [project]
 name=tracker
-base_path=/home/igor/proj/simple_tracker/
+base_path=/home/igor/proj/tracker/
 description=
 file_patterns=
 
@@ -28,12 +28,16 @@ long_line_behaviour=1
 long_line_column=80
 
 [files]
-current_page=3
-FILE_NAME_0=225;Ruby;0;EUTF-8;0;1;0;%2Fhome%2Figor%2Fproj%2Ftracker%2Ftracker.rb;0;4
+current_page=0
+FILE_NAME_0=4175;Ruby;0;EUTF-8;0;1;0;%2Fhome%2Figor%2Fproj%2Ftracker%2Ftracker.rb;0;4
 FILE_NAME_1=0;HTML;0;EUTF-8;0;1;0;%2Fhome%2Figor%2Fproj%2Ftracker%2Fviews%2Findex.erb;0;4
-FILE_NAME_2=467;Ruby;0;EUTF-8;0;1;0;%2Fhome%2Figor%2Fproj%2Ftracker%2Ffile_repository.rb;0;4
-FILE_NAME_3=1249;Ruby;0;EUTF-8;0;1;0;%2Fhome%2Figor%2Fproj%2Ftracker%2Fmongo_repository.rb;0;4
-FILE_NAME_4=154;Ruby;0;EUTF-8;0;1;0;%2Fhome%2Figor%2Fproj%2Ftracker%2Ftest.rb;0;4
+FILE_NAME_2=1276;Ruby;0;EUTF-8;0;1;0;%2Fhome%2Figor%2Fproj%2Ftracker%2Fmongo_repository.rb;0;4
+FILE_NAME_3=1085;Ruby;0;EUTF-8;0;1;0;%2Fhome%2Figor%2Fproj%2Ftracker%2Ffile_repository.rb;0;4
 
 [VTE]
 last_dir=/home/igor/proj/tracker
+
+[build-menu]
+EX_00_LB=_Execute
+EX_00_CM=rackup config.ru
+EX_00_WD=

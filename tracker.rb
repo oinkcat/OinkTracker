@@ -168,8 +168,3 @@ class TrackerApp < Sinatra::Base
     
     Translation.init_for_language LANGUAGE
 end
-
-# If we doesn't hosts on OpenShift - run directly
-if ENV['OPENSHIFT_APP_NAME'] == nil then
-    TrackerApp.run!
-end
