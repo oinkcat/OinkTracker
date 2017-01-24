@@ -57,6 +57,7 @@ header {
     min-width: 640px;
     
     background-color: #93B5BA;
+    opacity: 0.9;
     color: white;
     text-align: center;
     padding: 10px;

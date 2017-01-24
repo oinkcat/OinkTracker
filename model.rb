@@ -184,7 +184,7 @@ module TrackerModel
         def progress=(new_progress)
             @progress = new_progress
             if @progress == 100 then
-                self.complete
+                self.complete!
             else
                 if @status == Active then
                     @expire_at = nil
@@ -194,13 +194,13 @@ module TrackerModel
         end
         
         # Mark as completed
-        def complete
+        def complete!
             @status = Done
             @expire_at = Date.today + 3
         end
         
         # Mark as confirmed done
-        def confirm
+        def confirm!
             if @status == Done then
                 @status = Confirmed
                 @completed_at = Date.today
@@ -238,7 +238,7 @@ module TrackerModel
         def check_if_expired
             if @status != Confirmed && @expire_at != nil
                 if Date.today >= @expire_at
-                    self.confirm
+                    self.confirm!
                 end
             end
         end

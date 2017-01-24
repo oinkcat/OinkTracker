@@ -2,7 +2,8 @@
 #  
 
 require './model.rb'
-require './file_repository.rb'
+# require './file_repository.rb'
+require './mongo_repository.rb'
 
 include TrackerModel
 

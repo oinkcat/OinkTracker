@@ -4,7 +4,7 @@ require 'sinatra/base'
 require 'json'
 
 require './model.rb'
-require './file_repository.rb'
+require './mongo_repository.rb'
 require './translation.rb'
 
 # Simple tracker Sinatra class
@@ -13,7 +13,6 @@ class TrackerApp < Sinatra::Base
     include TrackerModel
 
     LANGUAGE = 'ru'
-    ID_FIELD = 'login'
     
     use Rack::Session::Pool, :expire_after => 86400
     
@@ -115,7 +114,7 @@ class TrackerApp < Sinatra::Base
         ticket_id = data['id'].to_i
         
         ticket = Repository.get_ticket ticket_id
-        ticket.confirm
+        ticket.confirm!
         Repository.update_ticket ticket
         
         json_response :ok => true

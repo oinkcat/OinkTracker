@@ -6,7 +6,7 @@ require 'json'
 
 module TrackerModel
 
-    module Repository
+    module PlainRepository
         ProjectsData = './test_data/projects.json'
         TicketsData = './test_data/tickets.json'
         UsersData = './test_data/users.json'
@@ -130,5 +130,8 @@ module TrackerModel
             end
         end
     end
+    
+    # Default repository alias
+    Repository = PlainRepository
     
 end
