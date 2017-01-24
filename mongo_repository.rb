@@ -79,7 +79,11 @@ module TrackerModel
         # Initialization
         def self.Initialize(config)
             @@mongo_uri = "mongodb://#{config[:host]}:#{config[:port]}"
-            @@db_name = config[:db_name]
+            @@options = {
+                :database => config[:db_name],
+                :user => config[:user],
+                :password => config[:password]
+            }
         end
         
         private
@@ -101,9 +105,7 @@ module TrackerModel
         
         # Get new connection to MongoDb
         def self.get_context
-            connection = Mongo::Client.new(@@mongo_uri, {
-                :database => @@db_name
-            })
+            connection = Mongo::Client.new(@@mongo_uri, @@options)
             return connection.database
         end
         
