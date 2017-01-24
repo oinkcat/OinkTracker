@@ -4,6 +4,7 @@ require 'sinatra/base'
 require 'json'
 
 require './model.rb'
+require './file_repository.rb'
 require './mongo_repository.rb'
 require './translation.rb'
 
@@ -11,8 +12,6 @@ require './translation.rb'
 class TrackerApp < Sinatra::Base
 
     include TrackerModel
-
-    LANGUAGE = 'ru'
     
     use Rack::Session::Pool, :expire_after => 86400
     
@@ -40,7 +39,7 @@ class TrackerApp < Sinatra::Base
     
     # Authenticate user
     get '/enter/:token?' do |token|
-        user = Repository.get_user_by_token(token)
+        user = @repository.get_user_by_token(token)
         if user != nil then
             session['login'] = user.login
             session['role'] = user.role
@@ -71,7 +70,7 @@ class TrackerApp < Sinatra::Base
     
     # Project info
     get '/projects' do
-        all_projects = Repository.get_projects
+        all_projects = @repository.get_projects
         proj_array = all_projects.map { |p| p.to_json }
         
         json_response proj_array
@@ -80,7 +79,7 @@ class TrackerApp < Sinatra::Base
     # Project by id
     get '/project/:id' do
         proj_id = params['id'].to_i
-        proj_info = Repository.get_project proj_id
+        proj_info = @repository.get_project proj_id
         
         json_response proj_info.to_json
     end
@@ -89,7 +88,7 @@ class TrackerApp < Sinatra::Base
     get '/tickets/:cat_id/:status' do
         cat_id = params['cat_id'].to_i
         stat = params['status'].to_i
-        tickets = Repository.get_tickets cat_id, stat
+        tickets = @repository.get_tickets cat_id, stat
         tickets_info = tickets.map { |t| t.to_json }
         
         json_response tickets_info
@@ -101,9 +100,9 @@ class TrackerApp < Sinatra::Base
         ticket_id = data['id'].to_i
         new_progress = data['progress'].to_i
         
-        ticket = Repository.get_ticket ticket_id
+        ticket = @repository.get_ticket ticket_id
         ticket.progress = new_progress
-        Repository.update_ticket ticket
+        @repository.update_ticket ticket
         
         json_response :ok => true
     end
@@ -113,9 +112,9 @@ class TrackerApp < Sinatra::Base
         data = json_data()
         ticket_id = data['id'].to_i
         
-        ticket = Repository.get_ticket ticket_id
+        ticket = @repository.get_ticket ticket_id
         ticket.confirm!
-        Repository.update_ticket ticket
+        @repository.update_ticket ticket
         
         json_response :ok => true
     end
@@ -130,7 +129,7 @@ class TrackerApp < Sinatra::Base
         new_ticket.progress = data['progress']
         new_ticket.cat_id = data['category_id'].to_i
         new_ticket.tags = data['tags']
-        Repository.add_ticket new_ticket
+        @repository.add_ticket new_ticket
         
         json_response :ok => true
     end
@@ -138,12 +137,12 @@ class TrackerApp < Sinatra::Base
     # Update ticket
     put '/save_ticket' do
         data = json_data()
-        ticket = Repository.get_ticket data['id']
+        ticket = @repository.get_ticket data['id']
         ticket.text = data['text']
         ticket.priority = data['priority']
         ticket.status = data['status']
         ticket.tags = data['tags']
-        Repository.update_ticket ticket
+        @repository.update_ticket ticket
         
         json_response :ok => true
     end
@@ -151,14 +150,10 @@ class TrackerApp < Sinatra::Base
     # Remove ticket
     delete '/remove_ticket/:id' do
         id = params['id'].to_i
-        Repository.remove_ticket id
+        @repository.remove_ticket id
         
         json_response :ok => true
     end
-    
-    # error 500 do
-    #     'Error occured!'
-    # end
     
     not_found do
         content_type 'text/plain'
@@ -166,5 +161,23 @@ class TrackerApp < Sinatra::Base
         '404 - Not found'
     end
     
-    Translation.init_for_language LANGUAGE
+    # Application instance initialization
+    def initialize(config)
+        super()
+        
+        # Select and initialize data repository
+        case config[:repository_type]
+            when 'mongo'
+                @repository = MongoRepository
+            when 'file'
+                @repository = FileRepository
+            else
+                raise StandardError, "Unknown repository type!"
+        end
+        @repository.Initialize config[:repository_config]
+        
+        # Load translated strings
+        Translation.init_for_language config[:translation]
+    end
+    
 end

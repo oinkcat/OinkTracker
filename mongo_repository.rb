@@ -8,11 +8,6 @@ module TrackerModel
 
     module MongoRepository
         
-        HOST = '127.0.0.1'
-        PORT = '27017'
-        DB_NAME = 'tracker'
-        MONGO_URI = "mongodb://#{HOST}:#{PORT}/#{DB_NAME}"
-        
         # Get all projects info
         def self.get_projects
             projects_bson = get_context()[:projects].find
@@ -81,6 +76,12 @@ module TrackerModel
             query_user_by_field 'token', token
         end
         
+        # Initialization
+        def self.Initialize(config)
+            @@mongo_uri = "mongodb://#{config[:host]}:#{config[:port]}"
+            @@db_name = config[:db_name]
+        end
+        
         private
         
         # Query ticket BSON by id
@@ -100,15 +101,14 @@ module TrackerModel
         
         # Get new connection to MongoDb
         def self.get_context
-            connection = Mongo::Client.new(MONGO_URI)
+            connection = Mongo::Client.new(@@mongo_uri, {
+                :database => @@db_name
+            })
             return connection.database
         end
         
         # Disable debug logs output
         Mongo::Logger.logger.level = Logger::WARN
     end
-    
-    # Default repository alias
-    Repository = MongoRepository
     
 end

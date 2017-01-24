@@ -6,7 +6,8 @@ require 'json'
 
 module TrackerModel
 
-    module PlainRepository
+    module FileRepository
+    
         ProjectsData = './test_data/projects.json'
         TicketsData = './test_data/tickets.json'
         UsersData = './test_data/users.json'
@@ -101,6 +102,11 @@ module TrackerModel
             get_user_by { |r| r['token'] == token }
         end
         
+        # Initialization
+        def self.Initialize(config)
+        
+        end
+        
         private
         
         # Get user info by predicate
@@ -130,8 +136,5 @@ module TrackerModel
             end
         end
     end
-    
-    # Default repository alias
-    Repository = PlainRepository
     
 end
