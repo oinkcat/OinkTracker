@@ -32,8 +32,8 @@ module TrackerModel
             end
             
             tickets_bson = get_context()[:tickets].find('$and' => [
-                { category_id: category_id },
-                { status: { '$in': statuses_match } }
+                { :category_id => category_id },
+                { :status => { '$in' => statuses_match } }
             ])
             tickets_bson.map { |doc| Ticket.from_json doc }
         end
@@ -49,7 +49,7 @@ module TrackerModel
             # Get the ticket id
             collection = get_context()[:tickets]
             group_result = collection.aggregate([{'$group' => {
-                '_id': 'id', 'max': { '$max': '$id' }
+                '_id' => 'id', 'max' => { '$max' => '$id' }
             }}]).first
             next_id = group_result.nil? ? 1 : group_result['max'] + 1
             ticket.id = next_id
