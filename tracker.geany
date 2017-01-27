@@ -28,11 +28,14 @@ long_line_behaviour=1
 long_line_column=80
 
 [files]
-current_page=0
-FILE_NAME_0=4175;Ruby;0;EUTF-8;0;1;0;%2Fhome%2Figor%2Fproj%2Ftracker%2Ftracker.rb;0;4
+current_page=6
+FILE_NAME_0=4243;Ruby;0;EUTF-8;0;1;0;%2Fhome%2Figor%2Fproj%2Ftracker%2Ftracker.rb;0;4
 FILE_NAME_1=0;HTML;0;EUTF-8;0;1;0;%2Fhome%2Figor%2Fproj%2Ftracker%2Fviews%2Findex.erb;0;4
-FILE_NAME_2=1276;Ruby;0;EUTF-8;0;1;0;%2Fhome%2Figor%2Fproj%2Ftracker%2Fmongo_repository.rb;0;4
-FILE_NAME_3=1085;Ruby;0;EUTF-8;0;1;0;%2Fhome%2Figor%2Fproj%2Ftracker%2Ffile_repository.rb;0;4
+FILE_NAME_2=3394;Ruby;0;EUTF-8;0;1;0;%2Fhome%2Figor%2Fproj%2Ftracker%2Fmongo_repository.rb;0;4
+FILE_NAME_3=3359;Ruby;0;EUTF-8;0;1;0;%2Fhome%2Figor%2Fproj%2Ftracker%2Ffile_repository.rb;0;4
+FILE_NAME_4=6578;Ruby;0;EUTF-8;0;1;0;%2Fhome%2Figor%2Fproj%2Ftracker%2Fmodel.rb;0;4
+FILE_NAME_5=240;None;0;EUTF-8;0;1;0;%2Fhome%2Figor%2Fproj%2Ftracker%2Fconfig.ru;0;4
+FILE_NAME_6=3783;JSON;0;EUTF-8;0;1;0;%2Fhome%2Figor%2Fproj%2Ftracker%2Ftest_data%2Ftickets.json;0;4
 
 [VTE]
 last_dir=/home/igor/proj/tracker

@@ -35,7 +35,17 @@ module TrackerModel
                 { :category_id => category_id },
                 { :status => { '$in' => statuses_match } }
             ])
-            tickets_bson.map { |doc| Ticket.from_json doc }
+            tickets = tickets_bson.map { |doc| Ticket.from_json doc }
+            
+            # Check for expired tickets
+            if status != Ticket::Confirmed then
+                expired_tickets = tickets.select { |t| t.expired? }
+                expired_tickets.each { |t| update_ticket t }
+                # Remove expired tickets from query result
+                tickets.reject! { |t| t.expired? }
+            end
+            
+            return tickets
         end
         
         # Get ticket by id

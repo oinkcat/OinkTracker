@@ -62,13 +62,13 @@
   {
     "id": 5,
     "text": "Трекер: тэги\n\nРазные отметки о статусе задач.",
-    "status": 1,
+    "status": 2,
     "category_id": 5,
     "title": "Трекер: тэги",
     "priority": 0,
     "progress": 100,
     "ts": "12.01.2017",
-    "completed_ts": null,
+    "completed_ts": "27.01.2017",
     "expire_ts": "21.01.2017",
     "tags": [
 
@@ -129,6 +129,21 @@
     "expire_ts": "19.01.2017",
     "tags": [
 
+    ]
+  },
+  {
+    "id": 10,
+    "text": "Just a test!",
+    "status": 2,
+    "category_id": 5,
+    "title": "Just a test!",
+    "priority": 1,
+    "progress": 100,
+    "ts": "20.01.2017",
+    "completed_ts": "27.01.2017",
+    "expire_ts": "24.01.2017",
+    "tags": [
+      "lol"
     ]
   }
 ]

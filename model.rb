@@ -206,6 +206,11 @@ module TrackerModel
                 @completed_at = Date.today
             end
         end
+        
+        # Is ticket is expired
+        def expired?
+            return @expired
+        end
     
         def initialize
             @id = nil
@@ -216,6 +221,7 @@ module TrackerModel
             @progress = 0
             @status = Active
             @tags = []
+            @expired = false
         end
         
         def inspect
@@ -236,9 +242,11 @@ module TrackerModel
         
         # Check if ticket is expired and set appropriate status
         def check_if_expired
-            if @status != Confirmed && @expire_at != nil
+            if @status == Done && @expire_at != nil
                 if Date.today >= @expire_at
                     self.confirm!
+                    # Ticket status has been changed. Should be saved
+                    @expired = true
                 end
             end
         end

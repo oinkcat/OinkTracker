@@ -41,7 +41,19 @@ module TrackerModel
                 get_confirmed ^ (r['status'] < Ticket::Confirmed)
             end
             
-            requested_records.map { |r| Ticket.from_json r }
+            tickets = requested_records.map { |r| Ticket.from_json r }
+            
+            # Check for expired tickets
+            if !get_confirmed then
+                expired_tickets = tickets.select { |t| t.expired? }
+                expired_tickets.each do |t|
+                    update_ticket t
+                end
+                # Remove expired tickets from query result
+                tickets.reject! { |t| t.expired? }
+            end
+            
+            return tickets
         end
         
         # Get ticket by id
@@ -104,7 +116,6 @@ module TrackerModel
         
         # Initialization
         def self.Initialize(config)
-        
         end
         
         private
