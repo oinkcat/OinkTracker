@@ -320,18 +320,18 @@
         }
         
         // Show loading banner after small timeout after loading
-        function deferLoadingBanner() {
+        function delayLoadingBanner() {
             window.setTimeout(function() {
                 if($scope.loading) {
                     loadingBannerShown = true;
                 }
-            }, 100);
+            }, 50);
         }
                 
         // Load tickets after projects loaded
         root.onviewchanged = function(catId, statId) {
             $scope.loading = true;
-            deferLoadingBanner();
+            delayLoadingBanner();
             provider.getTickets(catId, statId, ticketsLoaded);
         };
         

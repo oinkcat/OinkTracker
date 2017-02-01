@@ -37,6 +37,20 @@ class TrackerApp < Sinatra::Base
         JSON.load request.body
     end
     
+    # Get currently signed in user
+    def current_user
+        if session['login'] != nil then
+            User.new(session['login'], session['role'])
+        else
+            nil
+        end
+    end
+    
+    # Log last user action
+    def log_action(action)
+        @repository.put_last_action action
+    end
+    
     # Authenticate user
     get '/enter/:token?' do |token|
         user = @repository.get_user_by_token(token)
@@ -104,6 +118,9 @@ class TrackerApp < Sinatra::Base
         ticket.progress = new_progress
         @repository.update_ticket ticket
         
+        # Log action
+        log_action Action::ProgressChanged(ticket, current_user)
+        
         json_response :ok => true
     end
     
@@ -115,6 +132,9 @@ class TrackerApp < Sinatra::Base
         ticket = @repository.get_ticket ticket_id
         ticket.confirm!
         @repository.update_ticket ticket
+        
+        # Log action
+        log_action Action::TicketConfirmed(ticket, current_user)
         
         json_response :ok => true
     end
@@ -131,6 +151,9 @@ class TrackerApp < Sinatra::Base
         new_ticket.tags = data['tags']
         @repository.add_ticket new_ticket
         
+        # Log action
+        log_action Action::TicketAdded(new_ticket, current_user)
+        
         json_response :ok => true
     end
     
@@ -144,13 +167,20 @@ class TrackerApp < Sinatra::Base
         ticket.tags = data['tags']
         @repository.update_ticket ticket
         
+        # Log action
+        log_action Action::TicketModified(ticket, current_user)
+        
         json_response :ok => true
     end
     
     # Remove ticket
     delete '/remove_ticket/:id' do
         id = params['id'].to_i
+        ticket_to_remove = @repository.get_ticket id
         @repository.remove_ticket id
+        
+        # Log action
+        log_action Action::TicketRemoved(ticket_to_remove, current_user)
         
         json_response :ok => true
     end

@@ -129,7 +129,7 @@ module TrackerModel
         
         TitleLength = 55
         
-        attr_reader :text, :progress
+        attr_reader :title, :text, :progress
         attr_accessor :id, :cat_id, :progress, :priority, :status
         attr_accessor :added_at, :completed_at, :expire_at, :tags
         
@@ -254,8 +254,8 @@ module TrackerModel
     
     # Tracker user
     class User
-        ROLE_DEV = 0
-        ROLE_MGR = 1
+        Developer = 0
+        Manager = 1
     
         attr_reader :login, :role
         
@@ -272,11 +272,106 @@ module TrackerModel
         
         # Is user a developer?
         def is_developer?
-            return @role == ROLE_DEV
+            return @role == Developer
         end
         
         def inspect
             puts "#{@login} - #{role}"
+        end
+    end
+    
+    # Tracker user's action
+    class Action
+        AddTicket = 0
+        ModifyTicket = 1
+        RemoveTicket = 2
+        ChangedProgress = 3
+        ConfirmTicket = 4
+        
+        attr_reader :type, :item_id, :user_id
+        attr_accessor :ts, :item_title, :data
+        
+        # User added new ticket
+        def self.TicketAdded(ticket, user)
+            fill_action(AddTicket, ticket, user)
+        end
+        
+        # User modified ticket
+        def self.TicketModified(ticket, user)
+            fill_action(ModifyTicket, ticket, user)
+        end
+        
+        # User removed ticket
+        def self.TicketRemoved(ticket, user)
+            fill_action(RemoveTicket, ticket, user)
+        end
+        
+        # User changed ticket's progress
+        def self.ProgressChanged(ticket, user)
+            action = fill_action(ChangedProgress, ticket, user)
+            action.data << ticket.progress
+            return action
+        end
+        
+        # Manager confirmed the ticket
+        def self.TicketConfirmed(ticket, user)
+            fill_action(ConfirmTicket, ticket, user)
+        end
+        
+        # Check equality of actions
+        def ==(other)
+            if (@type == other.type) &&
+               (@user_id == other.user_id) &&
+               (@item_id == other.item_id) then
+                # Compare dates
+                return (@ts.year == other.ts.year) &&
+                       (@ts.month == other.ts.month) &&
+                       (@ts.day == other.ts.day)
+            else
+                false
+            end
+        end
+        
+        # Create action info from JSON data
+        def self.from_json(json)
+            new_action = Action.new(json['type'],
+                                    json['item_id'],
+                                    json['user_id'])
+            new_action.item_title = json['item_title']
+            new_action.data = json['data']
+            
+            new_action.ts = Time.parse(json['ts'])
+            return new_action
+        end
+        
+        # Get JSON data output
+        def to_json
+            {
+                'type' => @type,
+                'ts' => @ts.to_s,
+                'item_id' => @item_id,
+                'user_id' => @user_id,
+                'item_title' => @item_title,
+                'data' => @data
+            }
+        end
+        
+        def initialize(type, item_id, user_id)
+            @type = type
+            @item_id = item_id
+            @user_id = user_id
+            @ts = Time.now
+            @item_title = nil
+            @data = []
+        end
+        
+        private
+        
+        # Fill action common info
+        def self.fill_action(type, item, user)
+            action = Action.new(type, item.id, user.login)
+            action.item_title = item.title
+            return action
         end
     end
 end

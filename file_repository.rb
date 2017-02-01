@@ -11,6 +11,9 @@ module TrackerModel
         ProjectsData = './test_data/projects.json'
         TicketsData = './test_data/tickets.json'
         UsersData = './test_data/users.json'
+        ActionsData = './test_data/actions.json'
+        
+        NumOfActions = 20
     
         # Get all projects info
         def self.get_projects
@@ -112,6 +115,34 @@ module TrackerModel
         # Get user by access token
         def self.get_user_by_token(token)
             get_user_by { |r| r['token'] == token }
+        end
+        
+        # Get list of N last user actions
+        def self.get_last_actions
+            action_records = read_json_file(ActionsData)
+            
+            action_records.map { |r| Action::from_json r }
+        end
+        
+        # Put new last action
+        def self.put_last_action(action)            
+            action_records = read_json_file(ActionsData)
+            
+            # Determine if we can overwrite last action
+            recent_record = action_records[0]
+            if !recent_record.nil? then
+                most_recent = Action::from_json(recent_record)
+                if most_recent == action then
+                    action_records.delete_at 0
+                end
+            end
+            
+            # Prepend new action to list
+            action_records.unshift action.to_json
+            n_records = action_records[0, NumOfActions]
+            
+            # Dump records to file
+            save_json_file ActionsData, n_records
         end
         
         # Initialization
