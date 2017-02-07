@@ -45,21 +45,6 @@
     ]
   },
   {
-    "id": 5,
-    "text": "Трекер: тэги\n\nРазные отметки о статусе задач.",
-    "status": 2,
-    "category_id": 5,
-    "title": "Трекер: тэги",
-    "priority": 0,
-    "progress": 100,
-    "ts": "12.01.2017",
-    "completed_ts": "27.01.2017",
-    "expire_ts": "21.01.2017",
-    "tags": [
-
-    ]
-  },
-  {
     "id": 6,
     "text": "One more task!\n\nlol",
     "status": 0,
@@ -85,21 +70,6 @@
     "ts": "12.01.2017",
     "completed_ts": null,
     "expire_ts": null,
-    "tags": [
-
-    ]
-  },
-  {
-    "id": 9,
-    "text": "Трекер: оптимизация разметки",
-    "status": 2,
-    "category_id": 5,
-    "title": "Трекер: оптимизация разметки",
-    "priority": 2,
-    "progress": 100,
-    "ts": "16.01.2017",
-    "completed_ts": "17.01.2017",
-    "expire_ts": "19.01.2017",
     "tags": [
 
     ]

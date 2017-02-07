@@ -1,6 +1,26 @@
 [
   {
     "type": 2,
+    "ts": "2017-02-07 13:04:33 +0300",
+    "item_id": 9,
+    "user_id": "developer",
+    "item_title": "Трекер: оптимизация разметки",
+    "data": [
+
+    ]
+  },
+  {
+    "type": 2,
+    "ts": "2017-02-07 13:04:31 +0300",
+    "item_id": 5,
+    "user_id": "developer",
+    "item_title": "Трекер: тэги",
+    "data": [
+
+    ]
+  },
+  {
+    "type": 2,
     "ts": "2017-02-06 20:47:23 +0300",
     "item_id": 8,
     "user_id": "developer",
@@ -177,26 +197,6 @@
     "item_title": "KOKOKOKO",
     "data": [
 
-    ]
-  },
-  {
-    "type": 1,
-    "ts": "2017-01-31 15:41:29 +0300",
-    "item_id": 11,
-    "user_id": "developer",
-    "item_title": "KOKOKOKO",
-    "data": [
-
-    ]
-  },
-  {
-    "type": 3,
-    "ts": "2017-01-31 15:41:16 +0300",
-    "item_id": 1,
-    "user_id": "developer",
-    "item_title": "В аккаунте секретаря добавить фильтр по дате регистраци...",
-    "data": [
-      60
     ]
   }
 ]

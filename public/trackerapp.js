@@ -95,8 +95,9 @@
     // Last user action prototype
     function Action(type, ts, userId) {
         this.type = type;
-        var plusIdx = ts.indexOf('+');
-        this.timestamp = new Date(ts.substr(0, plusIdx - 1));
+        var tzInfoStart = ts.lastIndexOf(' ');
+        // DateTime without timezone info
+        this.timestamp = new Date(ts.substr(0, tzInfoStart));
         this.userId = userId;
         this.itemId = null;
         this.itemTitle = null;
