@@ -288,6 +288,9 @@ module TrackerModel
         ChangedProgress = 3
         ConfirmTicket = 4
         
+        # DateTime format that can be parsed via JavaScript
+        DateTimeFormat = '%FT%T%:z'
+        
         attr_reader :type, :item_id, :user_id
         attr_accessor :ts, :item_title, :data
         
@@ -353,7 +356,7 @@ module TrackerModel
         def to_json(full = false)
             json = {
                 'type' => @type,
-                'ts' => @ts.to_s,
+                'ts' => @ts.strftime(DateTimeFormat),
                 'item_id' => @item_id,
                 'user_id' => @user_id,
                 'item_title' => @item_title,
