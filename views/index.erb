@@ -111,7 +111,7 @@
             <div class="clear"></div>
         </div>
         
-        <table ng-show="!loadingBannerShown && hasItems()">
+        <table ng-show="!loading && hasItems()">
             <tr ng-repeat="item in items | orderBy:['done','-priority']" ng-class="selectedClass(item)">
                 <td class="priority-sign">
                     <div ng-class="progressView.priority(item)">
@@ -158,7 +158,7 @@
             <%= tr :no_tickets %>
         </div>
         
-        <div class="banner" ng-show="loadingBannerShown">
+        <div class="banner" ng-show="loading">
             <div>
                 <img alt="loading" src="loader-big.gif" />
             </div>

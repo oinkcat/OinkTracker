@@ -371,7 +371,6 @@
         
         // Loading state
         $scope.loading = true;
-        $scope.loadingBannerShown = true;
         
         $scope.selectedItem = null;
         $scope.items = [];
@@ -383,20 +382,10 @@
             $scope.items = items;
             $scope.applyAsync();
         }
-        
-        // Show loading banner after small timeout after loading
-        function delayLoadingBanner() {
-            window.setTimeout(function() {
-                if($scope.loading) {
-                    loadingBannerShown = true;
-                }
-            }, 50);
-        }
                 
         // Load tickets after projects loaded
         root.onviewchanged = function(catId, statId) {
             $scope.loading = true;
-            delayLoadingBanner();
             provider.getTickets(catId, statId, ticketsLoaded);
         };
         
