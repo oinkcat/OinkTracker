@@ -171,7 +171,7 @@ module TrackerModel
         def text=(text)
             @text = text
             
-            punct_idx = text.index %r{\.|,|;|$}
+            punct_idx = text.index %r{\.|;|$}
             title_len = [punct_idx, TitleLength].min
             @title = text[0, title_len].strip
             
@@ -186,7 +186,7 @@ module TrackerModel
             if @progress == 100 then
                 self.complete!
             else
-                if @status == Active then
+                if @status == Done then
                     @expire_at = nil
                 end
                 @status = Active
@@ -291,6 +291,11 @@ module TrackerModel
         attr_reader :type, :item_id, :user_id
         attr_accessor :ts, :item_title, :data
         
+        @@descriptions = [ 
+            :act_added, :act_edited, :act_removed,
+            :act_progress, :act_confirmed 
+        ]
+        
         # User added new ticket
         def self.TicketAdded(ticket, user)
             fill_action(AddTicket, ticket, user)
@@ -345,8 +350,8 @@ module TrackerModel
         end
         
         # Get JSON data output
-        def to_json
-            {
+        def to_json(full = false)
+            json = {
                 'type' => @type,
                 'ts' => @ts.to_s,
                 'item_id' => @item_id,
@@ -354,6 +359,12 @@ module TrackerModel
                 'item_title' => @item_title,
                 'data' => @data
             }
+            
+            if full then
+                json['description'] = tr @@descriptions[@type]
+            end
+            
+            return json
         end
         
         def initialize(type, item_id, user_id)

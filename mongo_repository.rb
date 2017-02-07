@@ -8,6 +8,8 @@ module TrackerModel
 
     module MongoRepository
         
+        NumOfActions = 20
+        
         # Get all projects info
         def self.get_projects
             projects_bson = get_context()[:projects].find
@@ -85,6 +87,43 @@ module TrackerModel
         def self.get_user_by_token(token)
             query_user_by_field 'token', token
         end
+        
+        # Get list of N last user actions
+        def self.get_last_actions
+            actions_bson = get_context()[:actions].find.sort(:_id => -1).to_a
+            actions_bson.map { |doc| Action.from_json doc }
+        end
+        
+        # Put new last action
+        def self.put_last_action(action)  
+            actions_coll = get_context()[:actions]
+            recent_doc = actions_coll.find.sort(:_id => -1).limit(1).first
+            
+            replace = false
+            
+            # Overwrite same last actions
+            if recent_doc != nil then
+                most_recent = Action.from_json(recent_doc)
+                replace = most_recent == action
+            end
+            
+            # Write last action
+            if replace then
+                query = actions_coll.find(:_id => recent_doc['_id'])
+                query.update_one(action.to_json)
+            else
+                actions_coll.insert_one(action.to_json)
+            end
+            
+            # Limit actions count to NumOfActions
+            all_ids = actions_coll.find.projection(:_id => 1).to_a
+            if all_ids.count > NumOfActions then
+                n_remove = all_ids.count - NumOfActions
+                ids_remove = all_ids[0, n_remove].map { |doc| doc['_id'] }
+                # Delete exceeding documents
+                actions_coll.find(:_id => {'$in' => ids_remove}).delete_many
+            end
+        end  
         
         # Initialization
         def self.Initialize(config)

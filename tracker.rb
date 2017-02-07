@@ -7,6 +7,7 @@ require './model.rb'
 require './file_repository.rb'
 require './mongo_repository.rb'
 require './translation.rb'
+require './view_utils.rb'
 
 # Simple tracker Sinatra class
 class TrackerApp < Sinatra::Base
@@ -106,6 +107,14 @@ class TrackerApp < Sinatra::Base
         tickets_info = tickets.map { |t| t.to_json }
         
         json_response tickets_info
+    end
+    
+    # Last actions of users
+    get '/last_actions' do
+        actions = @repository.get_last_actions
+        actions_array = actions.map { |a| a.to_json true }
+        
+        json_response actions_array
     end
     
     # Change ticket progress

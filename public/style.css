@@ -17,6 +17,7 @@ body {
     background-color: #EFEFEF;
 }
 
+/* Common elements */
 a {
     text-decoration: none;
     color: black;
@@ -37,6 +38,7 @@ img {
 section.page {
     margin: auto;
     margin-top: 110px;
+    margin-bottom: 10px;
     padding-top: 10px;
     padding-bottom: 30px;
     background-color: white;
@@ -44,6 +46,29 @@ section.page {
     max-width: 1100px;
     background-color: white;
     box-shadow: 0px 0px 5px silver;
+}
+
+section.page h1, section.page h3 {
+    font-weight: normal;
+    margin-bottom: 5px;
+}
+
+section.page h3 {
+    color: gray;
+}
+
+table {
+    width: 100%;
+    margin-top: 15px;
+    border-spacing: 0px;
+    border-collapse: collapse;
+}
+
+table tr td {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    vertical-align: top;
+    border-bottom: solid 1px #dddddd;
 }
 
 /* Header */
@@ -154,11 +179,15 @@ aside ul li {
     list-style: none;
 }
 
-ul li > a {
+aside ul li > a {
     display: block;
     width: 100%;
     padding: 5px;
     cursor: pointer;
+}
+
+aside ul li img {
+    vertical-align: -2px;
 }
 
 aside ul li.active {
@@ -193,15 +222,6 @@ section.item .btn,
 section.main .buttons .btn {
     padding: 10px;
     min-width: 80px;
-}
-
-section.item h1, section.item h3 {
-    font-weight: normal;
-    margin-bottom: 5px;
-}
-
-section.item h3 {
-    color: gray;
 }
 
 section.item textarea {
@@ -303,21 +323,38 @@ a.btn.danger:active {
     border-color: #EB5257;
 }
 
-/* Task list */
-.main table {
-    width: 100%;
-    margin-top: 15px;
-    border-spacing: 0px;
-    border-collapse: collapse;
+/* Dashboard view */
+.dashboard .actions-header {
+    margin: 0px 15px;
 }
 
-table tr td {
-    padding-top: 15px;
-    padding-bottom: 15px;
-    vertical-align: top;
-    border-bottom: solid 1px #dddddd;
+.dashboard table td.pic-column {
+    width: 50px;
+    padding-right: 15px;
 }
 
+.dashboard table div.act-item-info {
+    margin-top: 2px;
+    color: gray;
+}
+
+.dashboard table div.act-item-title {
+    margin-top: 5px;
+    font-size: larger;
+}
+
+.dashboard table td.progress-col {
+    width: 50px;
+    padding: 15px;
+}
+
+td.progress-col > div {
+    margin-top: 12px;
+    font-size: 18pt;
+    color: gray;
+}
+
+/* List view */
 table tr td:first-child {
     padding-left: 15px;
 }

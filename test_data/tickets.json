@@ -90,21 +90,6 @@
     ]
   },
   {
-    "id": 8,
-    "text": "Трекер: база данных\n\nСейчас все на файлах.",
-    "status": 0,
-    "category_id": 5,
-    "title": "Трекер: база данных",
-    "priority": 1,
-    "progress": 0,
-    "ts": "12.01.2017",
-    "completed_ts": null,
-    "expire_ts": null,
-    "tags": [
-
-    ]
-  },
-  {
     "id": 9,
     "text": "Трекер: оптимизация разметки",
     "status": 2,
@@ -156,7 +141,7 @@
     "category_id": 1,
     "title": "Ticket with high priority",
     "priority": 2,
-    "progress": 0,
+    "progress": 20,
     "ts": "01.02.2017",
     "completed_ts": null,
     "expire_ts": null,
@@ -170,8 +155,8 @@
     "status": 0,
     "category_id": 1,
     "title": "Ticket with low priority",
-    "priority": 1,
-    "progress": 0,
+    "priority": 0,
+    "progress": 60,
     "ts": "01.02.2017",
     "completed_ts": null,
     "expire_ts": null,

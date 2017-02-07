@@ -91,6 +91,39 @@
         
         this.done = false;
     };
+    
+    // Last user action prototype
+    function Action(type, ts, userId) {
+        this.type = type;
+        var plusIdx = ts.indexOf('+');
+        this.timestamp = new Date(ts.substr(0, plusIdx - 1));
+        this.userId = userId;
+        this.itemId = null;
+        this.itemTitle = null;
+        this.description = null;
+        this.data = null;
+    }
+    
+    Action.prototype.getProgress = function() {
+        return this.data.length > 0 ? this.data[0] + '%' : null;
+    };
+    
+    Action.prototype.getDateTime = function() {
+        // Get date and time without seconds
+        var locTsString = this.timestamp.toLocaleString();
+        var tsWoSeconds = locTsString.substr(0, locTsString.length - 3);
+        return tsWoSeconds;
+    };
+    
+    Action.load = function(json) {
+        var newAction = new Action(json.type, json.ts,  json.user_id);
+        newAction.itemId = json.item_id;
+        newAction.itemTitle = json.item_title;
+        newAction.description = json.description;
+        newAction.data = json.data;
+        
+        return newAction;
+    };
 
     // Application
     const app = angular.module('tracker', []);
@@ -103,15 +136,14 @@
         const CONFIRM_URL = '/confirm_ticket';
         const SAVE_TICKET_URL = '/save_ticket';
         const REMOVE_TICKET_URL = '/remove_ticket';
+        const LAST_ACTIONS_URL = '/last_actions';
         
         // Get all projects info
         this.getProjects = function(callback) {
             function projectsReceived(response) {
-                var projects = new Array();
-                
-                for(var i in response.data) {
-                    projects.push(Project.load(response.data[i]));
-                }
+                var projects = response.data.map(function(projJson) {
+                    return Project.load(projJson);
+                });
                 
                 callback(projects);
             }
@@ -122,11 +154,9 @@
         // Get all tickets in current category with status
         this.getTickets = function(catId, status, callback) {
             function ticketsReceived(response) {
-                var items = new Array();
-                
-                for(var i in response.data) {
-                    items.push(Ticket.load(response.data[i]));
-                }
+                var items = response.data.map(function(ticketJson) {
+                    return Ticket.load(ticketJson);
+                });
                 
                 callback(items);
             }
@@ -157,6 +187,19 @@
         this.removeItem = function(item, callback) {
             var url = REMOVE_TICKET_URL + '/' + item.id;
             $http.delete(url).then(callback);
+        };
+        
+        // Get last users' actions list
+        this.getLastActions = function(callback) {
+            function actionsReceived(response) {
+                var actions = response.data.map(function(actionJson) {
+                    return Action.load(actionJson);
+                });
+                
+                callback(actions);
+            }
+            
+            $http.get(LAST_ACTIONS_URL).then(actionsReceived);
         };
     });
     
@@ -190,20 +233,22 @@
         const CSS_CLASS_SHOW = 'in';
         const CSS_CLASS_HIDE = 'out';
         
-        // Title
-        $rootScope.title = '...';
-        $rootScope.subTitle = null;
-        
-        $rootScope.mode = 'list';
         
         // Menu show options
         $rootScope.menuShown = false;
         $rootScope.menuAnimClass = '';
         
+        // Default title
+        $rootScope.title = null;
+        $rootScope.subTitle = null;
+        
+        // Default view mode
+        $rootScope.mode = 'dashboard';
+        
         var menuAnimPlaying = false;
         
         // Control side menu
-        $rootScope.toggleSideMenu = function () {
+        $rootScope.toggleSideMenu = function() {
             if(menuAnimPlaying) {
                 return;
             }
@@ -226,7 +271,7 @@
             }
         };
         
-        // Current selected category and status
+        // Currently selected category and status
         $rootScope.nav = {
             categoryId: null,
             statusId: null
@@ -237,6 +282,7 @@
         
         $rootScope.onitemselected = null;
         $rootScope.onnewitem = null;
+        $rootScope.ondashboard = null;
     });
     
     // Menu controller
@@ -263,17 +309,30 @@
         
         // Got projects data
         function projectsLoaded(projects) {
-            // Selected project change callbacks
-            $scope.$watch('project', function() {
-                setInitialCategoryAndStatus();
-            });
-            
             $scope.projects = projects;
-            $scope.project = $scope.projects[0];
+            
+            // Selected project change callback
+            $scope.$watch('project', function() {
+                if($scope.project != null) {
+                    setInitialCategoryAndStatus();
+                }
+            });
         }
+        
+        // Data model elements
+        $scope.projects = null;
+        $scope.project = null;
+        $scope.category = null;
+        $scope.status = null;
         
         // Load projects info
         provider.getProjects(projectsLoaded);
+        
+        // Switch to dashoard view
+        $scope.showDashboard = function() {
+            root.mode = 'dashboard';
+            root.ondashboard();
+        };
         
         $scope.changeCategoryView = function(cat) {
             $scope.category = cat;
@@ -290,11 +349,18 @@
         
         // Active class
         $scope.isActive = function(item, itemType) {
+            if(root.mode == 'dashboard')
+                return false;
+            
             if(itemType == 'c') {
                 return $scope.category == item ? 'active' : null;
             } else if(itemType == 's') {
                 return $scope.status == item ? 'active' : null;
             }
+        };
+        
+        $scope.isDashboardShown = function() {
+            return root.mode == 'dashboard' ? 'active' : null;
         };
     });
     
@@ -454,12 +520,15 @@
                 return '';
             
             if(arguments.length == 0) {
+                // Getter
                 return $scope.editingItem.tags.join(', ');
             } else {
+                // Setter
                 var splittedTags = newTags.split(/\s*,\s*/);
-                $scope.editingItem.tags = splittedTags.filter(function(tag) {
-                    return tag.trim().length > 0;
-                });
+                if(splittedTags.length == 1 && splittedTags[0] == '') {
+                    splittedTags = [];
+                }
+                $scope.editingItem.tags = splittedTags;
             }
         };
 
@@ -513,5 +582,36 @@
             $scope.editing = true;
         };
     });
-
+    
+    // Dashboard controller
+    app.controller('dashboard', function($scope, provider) {
+        // Last actions list loaded
+        function actionsLoaded(actions) {
+            $scope.actions = actions;
+            $scope.applyAsync();
+        };
+        
+        var root = $scope.$parent;
+        
+        // Last actions list
+        $scope.actions = null;
+        
+        // Get path to user picture from action
+        $scope.getImgPath = function(action) {
+            return '/tiles/' + action.userId + '.jpg';
+        };
+        
+        // Dashboard view callback
+        root.ondashboard = function() {
+            root.title = root.subTitle = null;
+            provider.getLastActions(actionsLoaded);
+        };
+        
+        root.ondashboard();
+    });
+    
+    // Handle image not found error
+    w.setImgStub = function(imageElem) {
+        imageElem.src = '/tiles/default.jpg';
+    };
 })(window, document);

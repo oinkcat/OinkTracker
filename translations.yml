@@ -5,6 +5,16 @@ en:
     active: Active
     done: Done
     title: Tickets tracker
+    # Dashboard view
+    dashboard: dashboard
+    dashboard_cap: Dashboard
+    last_actions: Last activity
+    act_added: Ticket added
+    act_edited: Ticket edited
+    act_removed: Ticket removed
+    act_progress: Progress changed
+    act_confirmed: Ticket confirmed
+    no_activity: No activity yet!
     menu: Navigation menu
     new_ticket: Add new ticket
     loading: Loading tickets...
@@ -31,6 +41,16 @@ ru:
     active: Активные
     done: Выполненные
     title: Трекер задач
+    # Для обзорной страницы
+    dashboard: обзорная страница
+    dashboard_cap: Обзорная страница
+    last_actions: Последние действия
+    act_added: Элемент добавлен
+    act_edited: Элемент обновлен
+    act_removed: Элемент удален
+    act_progress: Прогресс выполнения изменен
+    act_confirmed: Элемент подтвержден
+    no_activity: Еще ничего не было!
     menu: Меню навигации
     new_ticket: Добавить элемент
     loading: Зарузка списка элементов...

@@ -11,6 +11,7 @@
 </head>
 
 <body ng-app="tracker">
+    <!-- Header -->
     <header>
         <div class="menu" ng-click="toggleSideMenu()" title="<%= tr :menu %>">
             <div></div>
@@ -20,40 +21,88 @@
         
         <div class="titles">
             <span class="title">
-                {{ title }}
+                {{ title || '<%= tr :title %>' }}
             </span>
-            <span class="subtitle" ng-show="subTitle != null">
-                {{ subTitle }}
+            <span class="subtitle">
+                {{ subTitle || '<%= tr :dashboard %>' }}
             </span>
         </div>
         
         <div class="userpic">
-            <img title="<%= login %>" src="/tiles/<%= login %>.jpg" />
+            <img title="<%= login %>" src="<%= View.user_pic(login) %>" />
         </div>
     </header>
     
+    <!-- Side menu -->
     <aside ng-show="menuShown" ng-class="menuAnimClass" ng-controller="menu">
+        <ul>
+            <li ng-class="isDashboardShown()">
+                <a ng-click="showDashboard()">
+                    <img src="/home.png" alt="home" />
+                    <%= tr :dashboard_cap %>
+                </a>
+            </li>
+        </div>
+        <hr />
+        
         <p><%= tr :project %></p>
         <select ng-model="project" ng-options="proj.name for proj in projects">
         </select>
         <hr />
         
-        <p><%= tr :category %></p>
-        <ul>
-            <li ng-repeat="cat in project.categories" ng-class="isActive(cat, 'c')">
-                <a ng-click="changeCategoryView(cat)">{{ cat.name }}</a>
-            </li>
-        </ul>
-        <hr />
-        
-        <p><%= tr :status %></p>
-        <ul>
-            <li ng-repeat="stat in category.countsByStatus" ng-class="isActive(stat, 's')">
-                <a ng-click="changeStatusView(stat)">{{ stat.name }}</a>
-            </li>
-        </ul>
+        <div ng-show="project != null">
+            <p><%= tr :category %></p>
+            <ul>
+                <li ng-repeat="cat in project.categories" ng-class="isActive(cat, 'c')">
+                    <a ng-click="changeCategoryView(cat)">{{ cat.name }}</a>
+                </li>
+            </ul>
+            <hr />
+            
+            <p><%= tr :status %></p>
+            <ul>
+                <li ng-repeat="stat in category.countsByStatus" ng-class="isActive(stat, 's')">
+                    <a ng-click="changeStatusView(stat)">{{ stat.name }}</a>
+                </li>
+            </ul>
+        </div>
     </aside>
     
+    <!-- Dashboard section -->
+    <section class="page dashboard" ng-show="mode == 'dashboard'" ng-controller="dashboard">
+        <div class="actions-header">
+            <h3><%= tr :last_actions %>:</h3>
+        </div>
+        <table>
+            <tr ng-repeat="action in actions">
+                <td class="pic-column">
+                    <img ng-attr-title="{{action.userId}}" ng-src="{{getImgPath(action)}}" onerror="setImgStub(this)" />
+                </td>
+                <td>
+                    <div class="act-item-info">
+                        {{ action.getDateTime() }}
+                        -
+                        {{ action.description }}
+                    </div>
+                    <div class="act-item-title">
+                        {{ action.itemTitle }}
+                    </div>
+                </td>
+                <td class="progress-col">
+                    <div>{{ action.getProgress() }}</div>
+                </td>
+            </tr>
+        </table>
+        
+        <div class="banner" ng-show="actions.length == 0">
+            <div>
+                <img alt="empty" src="empty.png" />
+            </div>
+            <%= tr :no_activity %>
+        </div>
+    </section>
+    
+    <!-- Tickets list section -->
     <section class="page main" ng-show="mode == 'list'" ng-controller="list">
         <div class="buttons">
             <a class="btn primary right" ng-class="disableOnLoad()" ng-click="newItem()">
@@ -117,6 +166,7 @@
         </div>
     </section>
     
+    <!-- Item editing section -->
     <section class="page item" ng-show="mode == 'item'" ng-controller="item">
         <div class="item-form">
             <h1 ng-show="editing">{{ editingItem.title }}</h1>
