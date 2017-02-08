@@ -17,7 +17,7 @@ en:
     no_activity: No activity yet!
     menu: Navigation menu
     new_ticket: Add new ticket
-    loading: Loading tickets...
+    loading: Loading...
     no_tickets: There are no tickets
     new_ticket_title: New ticket
     description: Description
@@ -29,6 +29,9 @@ en:
     save: Save
     cancel: Cancel
     remove: Remove
+    error: Communication error occured!
+    error_try: Try to
+    error_reload: reload page
     # Error message page
     auth_issue: Authentication problem
     invalid_login: Invalid login token!
@@ -53,7 +56,7 @@ ru:
     no_activity: Еще ничего не было!
     menu: Меню навигации
     new_ticket: Добавить элемент
-    loading: Зарузка списка элементов...
+    loading: Идет загрузка...
     no_tickets: Нет элементов для отображения
     new_ticket_title: Добавление элемента
     description: Описание
@@ -65,6 +68,9 @@ ru:
     save: Сохранить
     cancel: Отмена
     remove: Удалить
+    error: Произошла ошибка получения данных!
+    error_try: Попробуйте
+    error_reload: перезагрузить страницу
     # Страница сообщения об ошибке
     auth_issue: Проблема аутентификации
     invalid_login: Неверный токен входа!

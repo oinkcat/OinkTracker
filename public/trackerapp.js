@@ -127,6 +127,7 @@
     // Application
     const app = angular.module('tracker', []);
     
+    // Tickets data provider
     app.service('provider', function($http) {
         
         const PROJECTS_URL = '/projects';
@@ -202,6 +203,48 @@
         };
     });
     
+    // HTTP interceptor
+    app.factory('loadInterceptor', function($q, $rootScope) {
+        return {
+            request: function(config) {
+                if(config.method == 'GET') {
+                    $rootScope.loading = true;
+                }
+                return config;
+            },
+            
+            response: function(response) {
+                $rootScope.loading = false;
+                return response;
+            },
+            
+            responseError: function(rejecion) {
+                $rootScope.errorOccured({
+                    code: rejecion.status,
+                    text: rejecion.statusText
+                });
+                $q.reject(reject);
+            }
+        };
+    });
+    
+    // Add HTTP interceptor
+    app.config(['$httpProvider', function($httpProvider) {
+        $httpProvider.interceptors.push('loadInterceptor');
+    }]);
+    
+    // Handle user picture not found error
+    app.directive('stubPicFallback', function() {
+        return {
+            restrict: 'A',
+            link: function(scope, elem, attr) {
+                elem.on('error', function() {
+                    elem.prop('src', '/tiles/default.jpg');
+                });
+            }
+        };
+    });
+    
     // Global initialization
     app.run(function($rootScope, $timeout) {        
         // Do action after animation finished
@@ -232,7 +275,6 @@
         const CSS_CLASS_SHOW = 'in';
         const CSS_CLASS_HIDE = 'out';
         
-        
         // Menu show options
         $rootScope.menuShown = false;
         $rootScope.menuAnimClass = '';
@@ -244,7 +286,28 @@
         // Default view mode
         $rootScope.mode = 'dashboard';
         
+        // Loading state
+        $rootScope.loading = false;
+        
+        // Communication error occured
+        $rootScope.error = null;
+        
+        // Menu showing/disappearing
         var menuAnimPlaying = false;
+        
+        // Is data loaded and requested mode active
+        $rootScope.isModeActive = function(mode) {
+            return !$rootScope.loading &&
+                    $rootScope.error == null &&
+                    $rootScope.mode == mode;
+        };
+        
+        // On error occurence
+        $rootScope.errorOccured = function(details) {
+            $rootScope.loading = false;
+            $rootScope.error = details;
+            $rootScope.$applyAsync();
+        };
         
         // Control side menu
         $rootScope.toggleSideMenu = function() {
@@ -598,8 +661,4 @@
         root.ondashboard();
     });
     
-    // Handle image not found error
-    w.setImgStub = function(imageElem) {
-        imageElem.src = '/tiles/default.jpg';
-    };
 })(window, document);

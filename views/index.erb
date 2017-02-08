@@ -68,15 +68,42 @@
         </div>
     </aside>
     
+    <!-- Error information -->
+    <section class="page error" ng-show="error != null">
+        <div class="banner">
+            <figure class="error-sign">&times;</figure>
+            <h3>
+                <%= tr :error %>
+            </h3>
+            <p>
+                {{error.code}}, {{error.text}}
+            </p>
+            <p>
+                <%= tr :error_try %>
+                <a href="/"><%= tr :error_reload %></a>
+            </p>
+        </div>
+    </section>
+    
+    <!-- Loading indicator -->
+    <section class="page load-indicator" ng-show="loading">
+        <div class="banner">
+            <div>
+                <img alt="loading" src="loader-big.gif" />
+            </div>
+            <%= tr :loading %>
+        </div>
+    </section>
+    
     <!-- Dashboard section -->
-    <section class="page dashboard" ng-show="mode == 'dashboard'" ng-controller="dashboard">
+    <section class="page dashboard" ng-show="isModeActive('dashboard')" ng-controller="dashboard">
         <div class="actions-header">
             <h3><%= tr :last_actions %>:</h3>
         </div>
         <table>
             <tr ng-repeat="action in actions">
                 <td class="pic-column">
-                    <img ng-attr-title="{{action.userId}}" ng-src="{{getImgPath(action)}}" onerror="setImgStub(this)" />
+                    <img ng-attr-title="{{action.userId}}" ng-src="{{getImgPath(action)}}" stub-pic-fallback />
                 </td>
                 <td>
                     <div class="act-item-info">
@@ -103,7 +130,7 @@
     </section>
     
     <!-- Tickets list section -->
-    <section class="page main" ng-show="mode == 'list'" ng-controller="list">
+    <section class="page main" ng-show="isModeActive('list')" ng-controller="list">
         <div class="buttons">
             <a class="btn primary right" ng-class="disableOnLoad()" ng-click="newItem()">
                 + <%= tr :new_ticket %>
@@ -151,23 +178,16 @@
             </tr>
         </table>
         
-        <div class="banner" ng-hide="loading || hasItems()">
+        <div class="banner" ng-hide="hasItems()">
             <div>
                 <img alt="empty" src="empty.png" />
             </div>
             <%= tr :no_tickets %>
         </div>
-        
-        <div class="banner" ng-show="loading">
-            <div>
-                <img alt="loading" src="loader-big.gif" />
-            </div>
-            <%= tr :loading %>
-        </div>
     </section>
     
     <!-- Item editing section -->
-    <section class="page item" ng-show="mode == 'item'" ng-controller="item">
+    <section class="page item" ng-show="isModeActive('item')" ng-controller="item">
         <div class="item-form">
             <h1 ng-show="editing">{{ editingItem.title }}</h1>
             <h1 ng-hide="editing"><%= tr :new_ticket_title %></h1>
