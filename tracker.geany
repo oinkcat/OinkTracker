@@ -28,12 +28,14 @@ long_line_behaviour=1
 long_line_column=80
 
 [files]
-current_page=4
-FILE_NAME_0=1202;Ruby;0;EUTF-8;0;1;0;%2Fhome%2Figor%2Fproj%2Ftracker%2Ftracker.rb;0;4
+current_page=0
+FILE_NAME_0=2859;Ruby;0;EUTF-8;0;1;0;%2Fhome%2Figor%2Fproj%2Ftracker%2Ftracker.rb;0;4
 FILE_NAME_1=4280;Ruby;0;EUTF-8;0;1;0;%2Fhome%2Figor%2Fproj%2Ftracker%2Fmongo_repository.rb;0;4
 FILE_NAME_2=4378;Ruby;0;EUTF-8;0;1;0;%2Fhome%2Figor%2Fproj%2Ftracker%2Ffile_repository.rb;0;4
-FILE_NAME_3=2631;HTML;0;EUTF-8;0;1;0;%2Fhome%2Figor%2Fproj%2Ftracker%2Fviews%2Findex.erb;0;4
-FILE_NAME_4=18545;Javascript;0;EUTF-8;0;1;0;%2Fhome%2Figor%2Fproj%2Ftracker%2Fpublic%2Ftrackerapp.js;0;4
+FILE_NAME_3=2524;HTML;0;EUTF-8;0;1;0;%2Fhome%2Figor%2Fproj%2Ftracker%2Fviews%2Findex.erb;0;4
+FILE_NAME_4=6931;Javascript;0;EUTF-8;0;1;0;%2Fhome%2Figor%2Fproj%2Ftracker%2Fpublic%2Ftrackerapp.js;0;4
+FILE_NAME_5=809;YAML;0;EUTF-8;0;1;0;%2Fhome%2Figor%2Fproj%2Ftracker%2Ftranslations.yml;0;4
+FILE_NAME_6=3176;CSS;0;EUTF-8;0;1;0;%2Fhome%2Figor%2Fproj%2Ftracker%2Fpublic%2Fstyle.css;0;4
 
 [VTE]
 last_dir=/home/igor/proj/tracker
