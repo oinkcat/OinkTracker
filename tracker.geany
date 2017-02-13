@@ -28,8 +28,8 @@ long_line_behaviour=1
 long_line_column=80
 
 [files]
-current_page=0
-FILE_NAME_0=2859;Ruby;0;EUTF-8;0;1;0;%2Fhome%2Figor%2Fproj%2Ftracker%2Ftracker.rb;0;4
+current_page=3
+FILE_NAME_0=343;Ruby;0;EUTF-8;0;1;0;%2Fhome%2Figor%2Fproj%2Ftracker%2Ftracker.rb;0;4
 FILE_NAME_1=4280;Ruby;0;EUTF-8;0;1;0;%2Fhome%2Figor%2Fproj%2Ftracker%2Fmongo_repository.rb;0;4
 FILE_NAME_2=4378;Ruby;0;EUTF-8;0;1;0;%2Fhome%2Figor%2Fproj%2Ftracker%2Ffile_repository.rb;0;4
 FILE_NAME_3=2524;HTML;0;EUTF-8;0;1;0;%2Fhome%2Figor%2Fproj%2Ftracker%2Fviews%2Findex.erb;0;4

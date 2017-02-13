@@ -203,18 +203,27 @@
         };
     });
     
-    // HTTP interceptor
+    // XHR interceptor
     app.factory('loadInterceptor', function($q, $rootScope) {
+        // Number of GET requests currently performing
+        var nGetsPerforming = 0;
+        
         return {
             request: function(config) {
                 if(config.method == 'GET') {
+                    nGetsPerforming++;
                     $rootScope.loading = true;
                 }
                 return config;
             },
             
             response: function(response) {
-                $rootScope.loading = false;
+                if(response.config.method == 'GET') {
+                    nGetsPerforming--;
+                    if(nGetsPerforming == 0) {
+                        $rootScope.loading = false;
+                    }
+                }
                 return response;
             },
             

@@ -15,7 +15,7 @@ class TrackerApp < Sinatra::Base
     include TrackerModel
     
     use Rack::Session::Cookie, :expire_after => 86400,
-                               :secret => 'ololo'
+                               :secret => '28e2f1bc755ed3ca'
     
     # Check user authentiction
     before do
