@@ -1,5 +1,35 @@
 [
   {
+    "type": 1,
+    "ts": "2017-03-28T13:26:06+03:00",
+    "item_id": 16,
+    "user_id": "developer",
+    "item_title": "Test for comments",
+    "data": [
+
+    ]
+  },
+  {
+    "type": 0,
+    "ts": "2017-03-28T11:54:48+03:00",
+    "item_id": 16,
+    "user_id": "developer",
+    "item_title": "Test for comments",
+    "data": [
+
+    ]
+  },
+  {
+    "type": 1,
+    "ts": "2017-03-27T13:56:59+03:00",
+    "item_id": 12,
+    "user_id": "developer",
+    "item_title": "Ticket with high priority",
+    "data": [
+
+    ]
+  },
+  {
     "type": 3,
     "ts": "2017-02-03 14:58:42 +0300",
     "item_id": 13,

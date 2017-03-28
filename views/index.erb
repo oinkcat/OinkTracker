@@ -107,7 +107,7 @@
                 </td>
                 <td>
                     <div class="act-item-info">
-                        {{ action.getDateTime() }}
+                        {{ getDateTime(action) }}
                         -
                         {{ action.description }}
                     </div>
@@ -227,6 +227,43 @@
                 <a class="btn danger right" ng-show="editing" ng-click="removeItem()">
                     <%= tr :remove %>
                 </a>
+            </div>
+            
+            <div class="comments-area" ng-show="editing">                
+                <div class="form-group">
+                    <h3 class="left"><%= tr :comments %> ({{ editingItem.comments.length }})</h3>
+                    <a class="btn new-comment right" ng-hide="commentFormOpen" ng-click="newComment()">+</a>
+                    <div class="clear"></div>
+                </div>
+                
+                <div class="form-group new-comment" ng-show="commentFormOpen">
+                    <img src="/tiles/developer.jpg" stub-pic-fallback />
+                    <div class="box-wrapper">
+                        <textarea ng-model="newCommentText"></textarea>
+                        <a class="btn primary" ng-click="postComment()">
+                            <%= tr :submit %>
+                        </a>
+                        <a class="btn" ng-click="cancelComment()">
+                            <%= tr :cancel %>
+                        </a>
+                    </div>
+                    <div id="commentFormBottom" class="clear"></div>
+                </div>
+                
+                <div class="comment" ng-repeat="comment in editingItem.comments">
+                    <div class="form-group">
+                        <img ng-src="{{getImgPath(comment)}}" stub-pic-fallback  />
+                        <div class="comment-wrapper">
+                            <div class="comment-header">
+                                <span class="user-id">{{ comment.userId }}</span>
+                                -
+                                <span class="ts">{{ getDateTime(comment) }}</span>
+                            </div>
+                            <div class="comment-text" ng-bind-html="comment.text | raw"></div>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>

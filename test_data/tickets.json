@@ -163,5 +163,27 @@
     "tags": [
       "simple tag"
     ]
+  },
+  {
+    "id": 16,
+    "text": "Test for comments",
+    "status": 0,
+    "category_id": 1,
+    "title": "Test for comments",
+    "priority": 1,
+    "progress": 0,
+    "ts": "28.03.2017",
+    "completed_ts": null,
+    "expire_ts": null,
+    "tags": [
+      "test"
+    ],
+    "comments": [
+      {
+        "ts": "2017-03-28T13:26:46+03:00",
+        "user_id": "developer",
+        "text": "Comment text\ngoes\nhere!"
+      }
+    ]
   }
 ]

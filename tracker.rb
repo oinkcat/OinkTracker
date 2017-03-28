@@ -195,6 +195,21 @@ class TrackerApp < Sinatra::Base
         json_response :ok => true
     end
     
+    # Post ticket comment
+    post '/new_comment' do
+        data = json_data()
+        
+        # Add new comment to the ticket
+        ticket_to_comment = @repository.get_ticket data['ticket_id']
+        comment_text = Rack::Utils.escape_html(data['text'])
+        ticket_to_comment.add_comment current_user, comment_text
+        @repository.update_ticket ticket_to_comment
+        
+        new_comment = ticket_to_comment.comments.last
+        
+        json_response new_comment.to_json
+    end
+    
     not_found do
         content_type 'text/plain'
         

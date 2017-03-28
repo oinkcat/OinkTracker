@@ -45,6 +45,7 @@
         this.done = false;
         this.catId = 0;
         this.tags = [];
+        this.comments = [];
         
         this._step = 20;
     }
@@ -60,6 +61,12 @@
         
         if(json.tags != null) {
             newTicket.tags = json.tags;
+        }
+        
+        if(json.comments != null) {
+            newTicket.comments = json.comments.map(function(commentJson) {
+                return Comment.load(commentJson);
+            });
         }
         
         return newTicket;
@@ -92,6 +99,20 @@
         this.done = false;
     };
     
+    // Comment prototype
+    function Comment(login) {
+        this.userId = login;
+        this.timestamp = new Date();
+        this.text = '';
+    }
+    
+    Comment.load = function(json) {
+        var newComment = new Comment(json.user_id);
+        newComment.timestamp = new Date(json.ts);
+        newComment.text = json.text.replace(/\n/g, '<br />');
+        return newComment;
+    };
+    
     // Last user action prototype
     function Action(type, ts, userId) {
         this.type = type;
@@ -105,13 +126,6 @@
     
     Action.prototype.getProgress = function() {
         return this.data.length > 0 ? this.data[0] + '%' : null;
-    };
-    
-    Action.prototype.getDateTime = function() {
-        // Get date and time without seconds
-        var locTsString = this.timestamp.toLocaleString();
-        var tsWoSeconds = locTsString.substr(0, locTsString.length - 3);
-        return tsWoSeconds;
     };
     
     Action.load = function(json) {
@@ -137,6 +151,7 @@
         const SAVE_TICKET_URL = '/save_ticket';
         const REMOVE_TICKET_URL = '/remove_ticket';
         const LAST_ACTIONS_URL = '/last_actions';
+        const POST_COMMENT_URL = '/new_comment';
         
         // Get all projects info
         this.getProjects = function(callback) {
@@ -201,6 +216,21 @@
             
             $http.get(LAST_ACTIONS_URL).then(actionsReceived);
         };
+        
+        // Post new comment for ticket
+        this.postComment = function(text, ticket, callback) {
+            function commentReceived(response) {
+                var comment = Comment.load(response.data);
+                callback(comment);
+            }
+            
+            // Send comment data
+            var data = {
+                ticket_id: ticket.id,
+                text: text
+            };
+            $http.post(POST_COMMENT_URL, data).then(commentReceived);
+        };
     });
     
     // XHR interceptor
@@ -251,6 +281,13 @@
                     elem.prop('src', '/tiles/default.jpg');
                 });
             }
+        };
+    });
+    
+    // Return value as trusted HTML
+    app.filter('raw', function($sce) {
+        return function(val) {
+            return $sce.trustAsHtml(val);
         };
     });
     
@@ -342,6 +379,19 @@
             }
         };
         
+        // Get path to user picture from data object
+        $rootScope.getImgPath = function(dataObject) {
+            return '/tiles/' + dataObject.userId + '.jpg';
+        };
+        
+        // Get date and time without seconds for the object
+        $rootScope.getDateTime = function(dataObject) {
+            var locTsString = dataObject.timestamp.toLocaleString();
+            var colonPos = locTsString.lastIndexOf(':');
+            var tsWoSeconds = locTsString.substr(0, colonPos);
+            return tsWoSeconds;
+        };
+        
         // Currently selected category and status
         $rootScope.nav = {
             categoryId: null,
@@ -381,6 +431,10 @@
         // Got projects data
         function projectsLoaded(projects) {
             $scope.projects = projects;
+            
+            // DEBUG
+            $scope.project = projects[0];
+            $scope.changeCategoryView($scope.project.categories[0]);
             
             // Selected project change callback
             $scope.$watch('project', function() {
@@ -563,17 +617,20 @@
     });
     
     // Item view controller
-    app.controller('item', function($scope, provider) {
+    app.controller('item', function($scope, $anchorScroll, $timeout, provider) {
         var root = $scope.$parent;
         
         // Return back to list
         function returnToList() {
+            $scope.newCommentText = '';
             root.onviewchanged(root.nav.categoryId, root.nav.statusId);
             root.mode = 'list';
         }
 
         $scope.editing = false;
         $scope.editingItem = null;
+        $scope.commentFormOpen = false;
+        $scope.newCommentText = '';
         
         $scope.itemTagsInline = function(newTags) {
             if($scope.editingItem == null)
@@ -601,7 +658,8 @@
         
         // Cancel ticket editing
         $scope.closeItem = function() {
-            root.mode = 'list';
+            $scope.cancelComment();
+            returnToList();
         };
         
         // Remove current ticket
@@ -622,6 +680,35 @@
                 return itemPriority == priority ? 'active' : null;
             } else {
                 return null;
+            }
+        };
+        
+        // Open new comment form
+        $scope.newComment = function() {
+            $scope.commentFormOpen = true;
+            $timeout(function() {
+                $anchorScroll('commentFormBottom');
+            }, 100);
+        };
+        
+        // Cancel current comment
+        $scope.cancelComment = function() {
+            $scope.commentFormOpen = false;
+            $scope.newCommentText = '';
+        };
+        
+        // Post new comment to server
+        $scope.postComment = function() {
+            // Add sent comment to other ticket's comments
+            function add(sentComment) {
+                $scope.editingItem.comments.push(sentComment);
+            }
+            
+            // Send comment text to the server
+            var enteredText = $scope.newCommentText.trim();
+            if(enteredText.length > 0) {
+                provider.postComment(enteredText, $scope.editingItem, add);
+                $scope.cancelComment();
             }
         };
         
@@ -655,11 +742,6 @@
         
         // Last actions list
         $scope.actions = null;
-        
-        // Get path to user picture from action
-        $scope.getImgPath = function(action) {
-            return '/tiles/' + action.userId + '.jpg';
-        };
         
         // Dashboard view callback
         root.ondashboard = function() {

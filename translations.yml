@@ -32,6 +32,9 @@ en:
     error: Communication error occured!
     error_try: Try to
     error_reload: reload page
+    # Comments
+    comments: Comments
+    submit: Submit
     # Error message page
     auth_issue: Authentication problem
     invalid_login: Invalid login token!
@@ -71,6 +74,9 @@ ru:
     error: Произошла ошибка получения данных!
     error_try: Попробуйте
     error_reload: перезагрузить страницу
+    # Комментарии
+    comments: Комментарии
+    submit: Отправить
     # Страница сообщения об ошибке
     auth_issue: Проблема аутентификации
     invalid_login: Неверный токен входа!

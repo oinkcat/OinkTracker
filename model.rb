@@ -5,15 +5,11 @@ require './translation.rb'
 
 module TrackerModel
 
-    # Aux utilities
+    # Useful functions
     module Utils
         DateFormat = '%d.%m.%Y'
+        DateTimeFormat = '%FT%T%:z'
 
-        def self.generate_id(strong = false)
-            rnd = Random.new
-            (rnd.rand * 10000).to_i
-        end
-            
         def self.get_date(value)
             value != nil ? Date.strptime(value, DateFormat) : nil
         end
@@ -21,6 +17,11 @@ module TrackerModel
         # Format date as string
         def self.date_string(value)
             value != nil ? value.strftime(DateFormat) : nil
+        end
+        
+        # Format date and time as string
+        def self.datetime_string(value)
+            value != nil ? value.strftime(DateTimeFormat) : nil
         end
     end
 
@@ -132,6 +133,7 @@ module TrackerModel
         attr_reader :title, :text, :progress
         attr_accessor :id, :cat_id, :progress, :priority, :status
         attr_accessor :added_at, :completed_at, :expire_at, :tags
+        attr_accessor :comments
         
         # Fill from JSON data
         def self.from_json(json)
@@ -146,6 +148,12 @@ module TrackerModel
             new_ticket.completed_at = Utils.get_date(json['completed_ts'])
             new_ticket.expire_at = Utils.get_date(json['expire_ts'])
             new_ticket.tags = json['tags'] if json['tags'] != nil
+            
+            if json['comments'] != nil then
+                new_ticket.comments = json['comments'].map do |doc| 
+                    Comment.from_json(doc)
+                end
+            end
             
             new_ticket.check_if_expired
             
@@ -163,7 +171,8 @@ module TrackerModel
                 'ts' => Utils.date_string(@added_at),
                 'completed_ts' => Utils.date_string(@completed_at),
                 'expire_ts' => Utils.date_string(@expire_at),
-                'tags' => @tags
+                'tags' => @tags,
+                'comments' => @comments.map { |c| c.to_json }
             }
         end
         
@@ -211,6 +220,13 @@ module TrackerModel
         def expired?
             return @expired
         end
+
+        # Add comment to ticket
+        def add_comment(user, text)
+            new_comment = Comment.new(user.login, text)
+            new_comment.is_new = true
+            @comments << new_comment
+        end
     
         def initialize
             @id = nil
@@ -222,6 +238,7 @@ module TrackerModel
             @status = Active
             @tags = []
             @expired = false
+            @comments = []
         end
         
         def inspect
@@ -287,10 +304,7 @@ module TrackerModel
         RemoveTicket = 2
         ChangedProgress = 3
         ConfirmTicket = 4
-        
-        # DateTime format that can be parsed via JavaScript
-        DateTimeFormat = '%FT%T%:z'
-        
+                
         attr_reader :type, :item_id, :user_id
         attr_accessor :ts, :item_title, :data
         
@@ -356,7 +370,7 @@ module TrackerModel
         def to_json(full = false)
             json = {
                 'type' => @type,
-                'ts' => @ts.strftime(DateTimeFormat),
+                'ts' => Utils.datetime_string(@ts),
                 'item_id' => @item_id,
                 'user_id' => @user_id,
                 'item_title' => @item_title,
@@ -386,6 +400,35 @@ module TrackerModel
             action = Action.new(type, item.id, user.login)
             action.item_title = item.title
             return action
+        end
+    end
+    
+    # User's ticket comment
+    class Comment
+        attr_accessor :ts, :user_id, :text
+        attr_accessor :is_new
+    
+        # Create comment from JSON data
+        def self.from_json(json)
+            new_comment = Comment.new(json['user_id'], json['text'])
+            new_comment.ts = Time.parse(json['ts'])
+            new_comment
+        end
+    
+        # Get JSON representation
+        def to_json
+            {
+                :ts => Utils.datetime_string(@ts),
+                :user_id => @user_id,
+                :text => @text
+            }
+        end
+    
+        def initialize(user_id, text)
+            @user_id = user_id
+            @text = text
+            @ts = Time.now
+            @is_new = false
         end
     end
 end
